@@ -105,4 +105,4 @@ ai-compliance-risk-insights/
 
 ---
 
-**Author:** Bill Bell — IT Manager & Business Analyst (Banking) → AI Product/Solutions
+**Author:** Bill Bell — IT Manager & Business Analyst (Financial Services) → AI Product/Solutions

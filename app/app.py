@@ -21,12 +21,12 @@ def load_or_generate_transactions(n=2000, seed=42):
         "merchant_id": np.random.randint(1, 200, size=n),
         "device_score": np.random.rand(n),
         "distance_from_last_km": np.abs(np.random.normal(loc=5, scale=10, size=n)),
-        "foreign_txn": np.random.binomial(1, 0.05, size=n),
+        "is_foreign": np.random.binomial(1, 0.05, size=n),
         "hour": np.random.randint(0, 24, size=n)
     })
     idx = np.random.choice(n, size=int(0.02*n), replace=False)
     df.loc[idx, "amount"] *= np.random.randint(10, 50, size=len(idx))
-    df.loc[idx, "foreign_txn"] = 1
+    df.loc[idx, "is_foreign"] = 1
     return df
 
 def load_or_generate_loans(n=2000, seed=7):
@@ -65,6 +65,21 @@ def summarize_regulation(text, max_items=5):
 def kpi_card(label, value):
     st.metric(label, value)
 
+def reason_codes(row):
+    reasons = []
+    # Simple demo rules (replace with SHAP or engineered logic later)
+    if row["is_foreign"] == 1:
+        reasons.append("Foreign transaction")
+    if row["distance_from_last_km"] > 500:
+        reasons.append(f"Travel jump: {int(row['distance_from_last_km'])}km")
+    if row["amount"] > 300:
+        reasons.append("High amount vs typical spend")
+    if row["hour"] < 5 or row["hour"] > 23:
+        reasons.append("Nighttime activity")
+    if row["device_score"] < 0.15:
+        reasons.append("Low device reputation")
+    return ", ".join(reasons[:3]) if reasons else "High anomaly score"
+
 with st.sidebar:
     st.header("Data")
     tx_file = st.file_uploader("Upload Transactions CSV", type=["csv"], key="tx")
@@ -76,6 +91,7 @@ tab_exec, tab_fraud, tab_loans, tab_compliance = st.tabs(
     ["Executive Overview", "Fraud", "Loans", "Compliance"]
 )
 
+# Data
 if tx_file:
     transactions = pd.read_csv(tx_file)
 else:
@@ -86,17 +102,23 @@ if loan_file:
 else:
     loans = load_or_generate_loans()
 
+# Fraud tab
 with tab_fraud:
     st.subheader("Fraud Scoring")
-    features = ["amount", "merchant_id", "device_score", "distance_from_last_km", "foreign_txn", "hour"]
+    K = st.slider("Top-K Alerts", min_value=20, max_value=500, value=100, step=10, help="Show the top K highest-risk transactions for analyst review.")
+    features = ["amount", "merchant_id", "device_score", "distance_from_last_km", "is_foreign", "hour"]
     model = IsolationForest(contamination=0.02, random_state=123)
     scores = -model.fit_predict(transactions[features])
     risk = (scores - scores.min()) / (scores.max() - scores.min() + 1e-9) * 100
     transactions_scored = transactions.copy()
     transactions_scored["fraud_risk"] = risk.round(1)
+    # Reason codes for the top set
+    topk = transactions_scored.sort_values("fraud_risk", ascending=False).head(K).copy()
+    topk["reasons"] = topk.apply(reason_codes, axis=1)
     st.write("Top Alerts")
-    topk = transactions_scored.sort_values("fraud_risk", ascending=False).head(20)
+    st.caption(f"Showing top {K} highest-risk transactions")
     st.dataframe(topk.reset_index(drop=True))
+
     st.download_button(
         "Download Flagged Alerts CSV",
         topk.to_csv(index=False).encode("utf-8"),
@@ -104,11 +126,11 @@ with tab_fraud:
         mime="text/csv"
     )
 
+# Loans tab
 with tab_loans:
     st.subheader("Loan Default Risk")
     X = loans[["income","debt_to_income","credit_score","delinquencies","utilization","loan_amount"]]
     y = loans["default"]
-    from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
     clf = LogisticRegression(max_iter=200)
     clf.fit(X_train, y_train)
@@ -120,8 +142,7 @@ with tab_loans:
     loans_scored["default_risk"] = (pred*100).round(1)
     st.write("Applicants (sample):")
     st.dataframe(loans_scored.head(25))
-    import numpy as np
-    coefs = pd.Series(clf.coef_[0], index=X.columns).sort_values(key=lambda s: np.abs(s), ascending=False)
+    coefs = pd.Series(clf.coef_[0], index=X.columns).sort_values(key=lambda s: s.abs(), ascending=False)
     st.write("Feature Influence (abs coeff)")
     st.bar_chart(coefs.abs())
     st.download_button(
@@ -131,6 +152,7 @@ with tab_loans:
         mime="text/csv"
     )
 
+# Compliance tab
 with tab_compliance:
     st.subheader("Compliance Summary")
     default_text = (
@@ -144,6 +166,7 @@ with tab_compliance:
     for b in bullets:
         st.write(f"- {b}")
 
+# Exec overview
 with tab_exec:
     st.subheader("Executive KPIs (simulated)")
     col1, col2, col3 = st.columns(3)
@@ -154,3 +177,4 @@ with tab_exec:
     with col3:
         kpi_card("Compliance Flags (7d)", 12)
     st.caption("KPIs are illustrative. Replace with your real thresholds/metrics as you iterate.")
+

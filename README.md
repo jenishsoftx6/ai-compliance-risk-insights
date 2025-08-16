@@ -7,7 +7,7 @@
 ---
 
 ## 🔎 What this does
-- **Fraud** – Scores transactions using anomaly detection and flags top-risk events with reason codes.
+- **Fraud** – Scores transactions using anomaly detection and flags top-risk events with **reason codes**.
 - **Loans** – Predicts default risk and explains drivers (feature importance).
 - **Compliance** – Summarizes regulatory text and highlights potential rule violations against recent activity.
 - **Exec View** – KPI cards + drill-down tables; export to CSV/PDF.
@@ -23,7 +23,7 @@
 
 ## 🧰 Stack
 - **Python**: pandas, scikit-learn, matplotlib, numpy
-- **App**: Streamlit (demo UI)
+- **App**: Streamlit (demo UI) with **Top‑K alert budgeting**
 - **Optional**: Azure ML / Azure OpenAI endpoints (placeholders included)
 - **Packaging**: FastAPI (optional), Dockerfile (optional), Hugging Face/Streamlit Cloud (hosting)
 
@@ -50,6 +50,33 @@ streamlit run app/app.py
 ![Fraud Workflow](visuals/fraud_workflow.png)
 ![Loan Feature Importance](visuals/loan_feature_importance.png)
 ![Compliance Flow](visuals/compliance_flow.png)
+
+---
+
+## 🧮 Fraud Features (MVP)
+| Feature | Type | Why it matters |
+|---|---|---|
+| `amount_zscore_by_customer` | Behavior | Flags unusually large spend vs the customer’s baseline |
+| `distance_from_last_km` | Geo | Catches “impossible travel” and location jumps |
+| `is_foreign` | Geo/Rule | Foreign transactions are higher risk when sudden |
+| `device_change` | Device | New device between close transactions is suspicious |
+| `hour` | Behavior | Nighttime spikes can indicate takeover |
+| `merchant_id` | Categorical | Some merchants / MCCs are riskier historically |
+| `amount` | Value | Large absolute values drive loss exposure |
+
+> Add velocity features next (e.g., `txn_count_1h/24h`, `sum_amount_24h`).
+
+---
+
+## 📊 Fraud Metrics (demo values — replace with your backtest results)
+| Metric | Value | Notes |
+|---|---|---|
+| Precision@100 | 0.28 | 30-day backtest (target ≥ 0.25) |
+| PR-AUC | 0.16 | Imbalanced dataset friendly metric |
+| Median latency | 0.42s | Local inference |
+| Daily alert cap (K) | 100 | Ops capacity target |
+
+**Thresholding/Alerting Strategy:** Use a daily **Top-K** alert budget aligned to analyst capacity (e.g., K=100). The UI slider lets risk teams tune K and immediately see how many alerts they’ll review.
 
 ---
 
@@ -90,13 +117,6 @@ ai-compliance-risk-insights/
 
 ---
 
-## 🧪 What to measure (put in your README once you run models)
-- **Fraud:** precision@k on top alerts, alert volume reduction
-- **Loans:** ROC-AUC, confusion matrix, KS statistic
-- **Compliance:** time saved (e.g., 200→2-page summaries), # flags matched to new guidance
-
----
-
 ## 🗺️ Roadmap
 - Swap local models → Azure ML endpoints
 - Add RBAC/auth & audit logging
@@ -105,4 +125,5 @@ ai-compliance-risk-insights/
 
 ---
 
-**Author:** Bill Bell — IT Manager & Business Analyst (Financial Services) → AI Product/Solutions
+**Author:** Bill Bell — IT Manager & Business Analyst (Banking) → AI Product/Solutions
+

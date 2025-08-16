@@ -8,7 +8,7 @@ class Txn(BaseModel):
     merchant_id: int
     device_score: float
     distance_from_last_km: float
-    foreign_txn: int
+    is_foreign: int
     hour: int
 
 @app.get("/health")
@@ -17,5 +17,5 @@ def health():
 
 @app.post("/score/fraud")
 def score_fraud(txn: Txn):
-    risk = min(100.0, max(0.0, txn.amount/10 + 20*txn.foreign_txn + txn.device_score*10))
+    risk = min(100.0, max(0.0, txn.amount/10 + 20*txn.is_foreign + (1-txn.device_score)*10))
     return {"fraud_risk": round(risk, 1)}

